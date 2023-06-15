@@ -4,6 +4,8 @@
       "./node_modules/@types",
       "src/@types"
     ],
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "target": "ES6",
     "module": "CommonJS",
     "moduleResolution": "node",
