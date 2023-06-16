@@ -1,3 +1,15 @@
+### 디렉토리 구조 
+```python 
+
+src
+ ⊢ app.ts (서버 실행)
+ ⊢ @types (타입 정의)
+ ⊢ routes (라우터)
+ ⊢ controllers (컨트롤러)
+ ⊢ utils (유틸 함수)
+ ⊢ data (json 데이터)
+``` 
+
 
 ### REQUEST 예시   
 ```json 
