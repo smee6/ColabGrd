@@ -1,5 +1,6 @@
 
 ### REQUEST 예시   
+```json 
 {
     "start_day_identifier": "20210506",
     "timezone_identifier": "Asia/Seoul",
@@ -8,10 +9,11 @@
     "timeslot_interval": 1800,
     "is_ignore_schedule": false,
     "is_ignore_workhour": false
-    
 }
+``` 
 
 ### RESPONSE (예시에 대한 응답)   
+```json 
 [
     {
         "start_of_day": 1620226800,
@@ -85,3 +87,4 @@
         ]
     }
 ]
+``` 
