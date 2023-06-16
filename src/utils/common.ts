@@ -9,9 +9,9 @@ import workhours from "../data/workhours.json";
  * */
 function makeTimeslots(startOfDay: number, slotTime: number): Timeslot[] {
     const timeslots: Timeslot[] = [];
-    let currentTime = startOfDay;
-    const endOfDay = startOfDay + 86400; // 1일은 86400초 
 
+    let currentTime = startOfDay;
+    const endOfDay = startOfDay + 86400;
     while (currentTime + slotTime <= endOfDay) {
         const timeslot: Timeslot = {
             begin_at: currentTime,
@@ -21,9 +21,9 @@ function makeTimeslots(startOfDay: number, slotTime: number): Timeslot[] {
 
         currentTime += slotTime;
     }
-
     return timeslots;
 }
+
 
 /**
  * @param startDay 시작일
@@ -41,4 +41,26 @@ function strToTimeStamp(startDay: string) {
     return result;
 }
 
-export { makeTimeslots, strToTimeStamp }
+function dayConverter(day: number) {
+    if (day === 0) {
+        day = 1;
+    } else if (day === 1) {
+        day = 2;
+    } else if (day === 2) {
+        day = 3;
+    } else if (day === 3) {
+        day = 4;
+    }
+    else if (day === 4) {
+        day = 5;
+    }
+    else if (day === 5) {
+        day = 6;
+    }
+    else if (day === 6) {
+        day = 7;
+    }
+    return day;
+}
+
+export { makeTimeslots, strToTimeStamp, dayConverter }

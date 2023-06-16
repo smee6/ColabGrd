@@ -6,7 +6,7 @@ interface RequestBody {
     service_duration: number
     days?: number
     timeslot_interval?: number
-    is_ignore_schedule?: boolean
+    is_ignore_schedule?: boolean// 기본값 false
     is_ignore_workhour?: boolean
 }
 
