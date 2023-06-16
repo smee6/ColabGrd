@@ -5,6 +5,18 @@ import events from "../data/events.json";
 import workhours from "../data/workhours.json";
 import momentTimezone from "moment-timezone";
 
+/**
+ * @description: 예약 가능한 시간대를 조회
+ * @RequestParams
+ * @param start_day_identifier 시작일
+ * @param timezone_identifier 타임존
+ * @param service_duration 서비스 시간
+ * @param days 조회 일수
+ * @param timeslot_interval 타임슬롯 간격
+ * @param is_ignore_schedule 스케줄 무시 여부
+ * @param is_ignore_workhour 근무시간 무시 여부
+ * @returns DayTimetable[]
+ * */
 const getTimeSlots = async (req: Request, res: Response) => {
     try {
         const requestBody: RequestBody = req.body;
@@ -47,7 +59,7 @@ const getTimeSlots = async (req: Request, res: Response) => {
                 timeslots: makeTimeslots(currentDay, slotTime),
             };
 
-            //스케줄 무시할 경우
+            //기존 예약 스케줄 무시할 경우
             if (!isIgnoreSchedule) {
                 // 이벤트가 있으면 timeslots에서 제거
                 events.forEach((event) => {
@@ -57,7 +69,7 @@ const getTimeSlots = async (req: Request, res: Response) => {
                 });
             };
 
-            //운영시간 무시할 경우
+            //지정된 운영시간 무시할 경우
             if (!isIgnoreWorkhour) {
                 // openTime 이전의 timeslots 제거
                 dayTimetable.timeslots = dayTimetable.timeslots.filter((timeslot) => {
@@ -89,6 +101,7 @@ const getTimeSlots = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "서버 에러 콘솔창에서 확인." });
     }
 };
+
 
 export {
     getTimeSlots

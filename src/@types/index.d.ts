@@ -1,4 +1,4 @@
-// src/@types/index.d.ts
+// 개발 타입 정의
 
 interface RequestBody {
     start_day_identifier: string
@@ -22,6 +22,5 @@ interface Timeslot {
     begin_at: number // Unixstamp seconds
     end_at: number // Unixstamp seconds
 }
-
 
 export { RequestBody, ResponseBody, DayTimetable, Timeslot }

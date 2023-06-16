@@ -28,7 +28,7 @@ function makeTimeslots(startOfDay: number, slotTime: number): Timeslot[] {
  * @param startDay 시작일
  * @returns 시작일의 Unixstamp seconds
  *  */
-function strToTimeStamp(startDay: string) {
+function strToTimeStamp(startDay: string): number {
 
     const year = parseInt(startDay.substr(0, 4));
     const month = parseInt(startDay.substr(4, 2)) - 1;
@@ -44,7 +44,7 @@ function strToTimeStamp(startDay: string) {
  * @param day 요일
  * @returns 요일에 해당하는 key값
  * */
-function dayConverter(day: number) {
+function dayConverter(day: number): number {
     if (day === 0) {
         day = 1;
     } else if (day === 1) {
@@ -53,14 +53,11 @@ function dayConverter(day: number) {
         day = 3;
     } else if (day === 3) {
         day = 4;
-    }
-    else if (day === 4) {
+    } else if (day === 4) {
         day = 5;
-    }
-    else if (day === 5) {
+    } else if (day === 5) {
         day = 6;
-    }
-    else if (day === 6) {
+    } else if (day === 6) {
         day = 7;
     }
     return day;
