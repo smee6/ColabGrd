@@ -1,67 +1,75 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { RequestBody, ResponseBody } from "../@types";
+import { RequestBody, ResponseBody, DayTimetable, Timeslot } from "../@types";
+import { makeTimeslots, strToTimeStamp } from "../utils/common";
+import events from "../data/events.json";
+import workhours from "../data/workhours.json";
 
 const router = express.Router();
-router.get("/test", (req: Request, res: Response) => {
-    return res.send("Hello World!");
-});
 
 router.post("/getTimeSlots", (req: Request, res: Response) => {
-    // 요청 바디 파라미터 추출
-    const requestBody: RequestBody = req.body;
-    console.log(requestBody);
-    // 예시 응답 데이터 생성
-    // 필수값 검증
-    const { start_day_identifier, timezone_identifier, service_duration } = req.body;
-    if (!start_day_identifier || !timezone_identifier || !service_duration) {
-        return res.status(400).json({ error: 'Missing required fields.' });
+    try {
+        const requestBody: RequestBody = req.body;
+        const startDay = requestBody.start_day_identifier;
+        const timezone = requestBody.timezone_identifier;
+        const duration = Number(requestBody.service_duration);
+        const slotTime = Number(requestBody.timeslot_interval) || 1800;
+        const isIgnoreSchedule = requestBody.is_ignore_schedule || false;
+        const days = requestBody.days || 1;
+
+        const startOfDay = strToTimeStamp(startDay);
+
+        // 응답 바디
+        const result: ResponseBody = [];
+        let dayMod = 0;
+        for (let i = 0; i < days; i++) {
+            const currentDay = startOfDay + (i * 86400); // 1일은 86400초
+
+            let dayTimetable: DayTimetable = {
+                start_of_day: currentDay,
+                day_modifier: dayMod,
+                is_day_off: false, // is_day_off 로직 추가 필요
+                timeslots: makeTimeslots(currentDay, slotTime),
+            };
+
+            //timeslots에 events 와 겹치는 시간대가 이미 있다면 빼고 다시 timeslots를 만들어야 한다.
+            console.log(events);
+            if (!isIgnoreSchedule && events.length > 0) {
+                const filteredTimeslots: Timeslot[] = [];
+                dayTimetable.timeslots.forEach((timeslot: Timeslot) => {
+                    const hasConflict = events.some((event) => {
+                        return event.begin_at < timeslot.end_at && event.end_at > timeslot.begin_at;
+                    });
+                    if (!hasConflict) {
+                        filteredTimeslots.push(timeslot);
+                    }
+                });
+                dayTimetable.timeslots = filteredTimeslots;
+            }
+
+
+            if ((currentDay - startOfDay) % 86400 === 0) {
+                dayMod++;
+            };
+
+            result.push(dayTimetable);
+        };
+
+        // 응답 전송
+        return res.json(result);
+
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).json({ message: "서버 에러" });
+
     }
-
-    const response: ResponseBody = [
-        {
-            "start_of_day": 1538697600,
-            "day_modifier": 2,
-            "is_day_off": false,
-            "timeslots": [
-                {
-                    "begin_at": 1538740800,
-                    "end_at": 1538744400
-                },
-                {
-                    "begin_at": 1538742600,
-                    "end_at": 1538746200
-                },
-                {
-                    "begin_at": 1538744400,
-                    "end_at": 1538748000
-                }
-            ]
-        },
-        {
-            "start_of_day": 1538784000,
-            "day_modifier": 3,
-            "is_day_off": false,
-            "timeslots": [
-                {
-                    "begin_at": 1538827200,
-                    "end_at": 1538830800
-                },
-                {
-                    "begin_at": 1538829000,
-                    "end_at": 1538832600
-                },
-                {
-                    "begin_at": 1538830800,
-                    "end_at": 1538834400
-                }
-            ]
-        }
-    ];
-
-    // 응답 전송
-    res.json(response);
 });
+
+
+
+
+
 
 export default router;
 

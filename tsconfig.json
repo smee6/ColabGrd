@@ -5,6 +5,7 @@
       "src/@types"
     ],
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "noEmit": true,
     "target": "ES6",
     "module": "CommonJS",
