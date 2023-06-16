@@ -10,6 +10,14 @@ src
  ⊢ data (json 데이터)
 ``` 
 
+### 테스트 시작
+```python 
+npm install -g yarn
+yarn install
+yarn dev
+
+기본 포트 4040
+``` 
 
 ### REQUEST 예시   
 ```json 

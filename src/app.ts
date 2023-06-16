@@ -23,7 +23,7 @@ const runServer = (): void => {
             console.log(`
 --------------------------------------------
 ##$$$$ Server listening on port: ${PORT}
-http://localhost:${PORT}/test
+http://localhost:${PORT}
 --------------------------------------------
 ***********SERVER IS RUNNING NOW************`);
         });

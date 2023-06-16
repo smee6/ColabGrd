@@ -21,12 +21,12 @@ const getTimeSlots = async (req: Request, res: Response) => {
     try {
         const requestBody: RequestBody = req.body;
 
-        //필수값 검증
+        //필수값 validation
         if (!requestBody.start_day_identifier || !requestBody.timezone_identifier || !requestBody.service_duration) {
             return res.status(400).json({ message: "request param error" });
         }
 
-        //리퀘스트 바디 값
+        //request body
         const startDay = requestBody.start_day_identifier;
         const duration = Number(requestBody.service_duration);
         const timezone = requestBody.timezone_identifier || "Asia/Seoul";
@@ -36,7 +36,7 @@ const getTimeSlots = async (req: Request, res: Response) => {
         const days = requestBody.days || 1;
         const startOfDay = strToTimeStamp(startDay);
 
-        // 응답 바디
+        // result
         const result: ResponseBody = [];
         let dayMod: number = 0;
         for (let i = 0; i < days; i++) {
@@ -52,6 +52,7 @@ const getTimeSlots = async (req: Request, res: Response) => {
             const closeTime = matchedWorkhour ? matchedWorkhour.close_interval : 72000;
             const dayoff = matchedWorkhour ? matchedWorkhour.is_day_off : false;
 
+            //result에 넣어줄 해당일 dayTimetable
             let dayTimetable: DayTimetable = {
                 start_of_day: currentDay,
                 day_modifier: dayMod,
@@ -86,6 +87,7 @@ const getTimeSlots = async (req: Request, res: Response) => {
                 }
             };
 
+            //하루 지나면 날짜 변경
             if ((currentDay - startOfDay) % 86400 === 0) {
                 dayMod++;
             };
@@ -93,7 +95,6 @@ const getTimeSlots = async (req: Request, res: Response) => {
             result.push(dayTimetable);
         };
 
-        // 응답 전송
         return res.json(result);
 
     } catch (err) {
