@@ -19,6 +19,10 @@ yarn dev
 기본 포트 4040
 ``` 
 
+### POSTMAN 테스트 (20210509 날짜의 경우)
+![image](https://github.com/smee6/ColabGrd/assets/65226760/3664cdf4-8780-41ce-83c0-bdad0f5e26bb)
+
+ 
 ### REQUEST 예시   
 ```json 
 {
