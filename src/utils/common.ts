@@ -1,6 +1,5 @@
 import { Timeslot } from "../@types";
-import events from "../data/events.json";
-import workhours from "../data/workhours.json";
+import moment from "moment";
 
 /**
  * @param startOfDay 시작일의 Unixstamp seconds
@@ -41,6 +40,10 @@ function strToTimeStamp(startDay: string) {
     return result;
 }
 
+/**
+ * @param day 요일
+ * @returns 요일에 해당하는 key값
+ * */
 function dayConverter(day: number) {
     if (day === 0) {
         day = 1;
